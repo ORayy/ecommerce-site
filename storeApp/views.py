@@ -1,12 +1,10 @@
 from django.shortcuts import get_object_or_404, render
 
-# Create your views here.
-from .models import Category, Product
 
-def categories(request):
-    return {
-        'categories': Category.objects.all()
-    }
+from .models import Category, Product
+# Create your views here.
+
+
 
 def all_products(request):
     products = Product.objects.all()
