@@ -29,7 +29,7 @@ class Basket():
         else:
             self.basket[product_id] = {'price': str(product.price), 'qty': qty}
 
-        self.session.modified = True
+        self.save()
 
     # making Basket Class/object an iterable
     def __iter__(self):
@@ -49,9 +49,29 @@ class Basket():
             item['total_price'] = item['price'] * item['qty']
             yield item
 
+    # getting the quantity/number of items in the basket/session data
     def __len__(self):
         """
         Get the basket data and count the qty of items
         """
         return sum(item['qty'] for item in self.basket.values())
+    
+    # Getting the total(price) of all items added to the basket
+    def get_total_price(self):
+        return sum(Decimal(item['price']) * item['qty'] for item in self.basket.values())
+
+    # Delete item from basket
+    def delete(self, product):
+        """
+        Delete item from session data / basket
+        """
+        product_id = str(product)
+
+        if product_id in self.basket:
+            del self.basket[product_id]
+            self.save()
+
+    # Creating a save function
+    def save(self):
+        self.session.modified = True
 
